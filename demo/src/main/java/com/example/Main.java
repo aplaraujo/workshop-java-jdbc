@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.example.db.DB;
+import com.example.entities.Order;
 import com.example.entities.Product;
+import com.example.entities.enums.OrderStatus;
 
 public class Main {
 	public static void main(String[] args) throws SQLException {
@@ -14,11 +16,11 @@ public class Main {
 
 		Statement st = conn.createStatement();
 
-		ResultSet rs = st.executeQuery("select * from tb_product");
+		ResultSet rs = st.executeQuery("select * from tb_order");
 
 		while (rs.next()) {
-			Product prod = instantiateProduct(rs);
-			System.out.println(prod);
+			Order order = instantiateOrder(rs);
+			System.out.println(order);
 		}
 	}
 
@@ -30,5 +32,15 @@ public class Main {
 		prod.setImageUri(rs.getString("image_uri"));
 		prod.setPrice(rs.getDouble("price"));
 		return prod;
+	}
+
+	private static Order instantiateOrder(ResultSet rs) throws SQLException {
+		Order order = new Order();
+		order.setId(rs.getLong("id"));
+		order.setLatitude(rs.getDouble("latitude"));
+		order.setLongitude(rs.getDouble("longitude"));
+		order.setMoment(rs.getTimestamp("moment").toInstant());
+		order.setStatus(OrderStatus.values()[rs.getInt("status")]);
+		return order;
 	}
 }
