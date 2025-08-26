@@ -10,8 +10,8 @@ import java.util.Properties;
 public class DB {
     private static Connection conn = null;
 
-    public static Connection getConnection() {
-        if (conn == null) {
+    public static Connection getConnection() { // Retorna um objeto de conexão com o banco de dados
+        if (conn == null) { // Lógica básica para conexão com o banco de dados a partir de um arquivo de propriedades
             try {
                 Properties props = loadProperties();
                 String url = props.getProperty("dburl");
@@ -33,7 +33,7 @@ public class DB {
         }
     }
 
-    private static Properties loadProperties() {
+    private static Properties loadProperties() { // Acesso ao arquivo de propriedades 
         try (FileInputStream fs = new FileInputStream("db.properties")) {
             Properties props = new Properties();
             props.load(fs);
